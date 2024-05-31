@@ -1,0 +1,133 @@
+{% extends 'user/user_base.html' %}
+{% load static %}
+{% block title %}Details{% endblock %}
+
+{% block content %}
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+<header class="mb-4">
+    <h1 class="text-center">Details</h1>
+</header>
+
+<h2>Education Background</h2>
+<section class="mb-4">
+    <div class="row">
+        {% for detail in background %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ detail.primary_school_name }}</h5>
+                    <p class="card-text"><strong>Primary School Year Attended:</strong> {{ detail.primary_school_year_attended }}</p>
+                    <p class="card-text"><strong>Primary School Address:</strong> {{ detail.primary_school_address }}</p>
+                    <p class="card-text"><strong>Secondary School Name:</strong> {{ detail.secondary_school_name }}</p>
+                    <p class="card-text"><strong>Secondary School Year Attended:</strong> {{ detail.secondary_school_year_attended }}</p>
+                    <p class="card-text"><strong>Secondary School Address:</strong> {{ detail.secondary_school_address }}</p>
+                    <p class="card-text"><strong>VETA Name:</strong> {{ detail.veta_name }}</p>
+                    <p class="card-text"><strong>VETA Program:</strong> {{ detail.veta_program }}</p>
+                    <p class="card-text"><strong>VETA Year Attended:</strong> {{ detail.veta_year_attended }}</p>
+                    <p class="card-text"><strong>VETA Address:</strong> {{ detail.veta_address }}</p>
+                    <p class="card-text"><strong>College Name:</strong> {{ detail.college_name }}</p>
+                    <p class="card-text"><strong>College Program:</strong> {{ detail.college_program }}</p>
+                    <p class="card-text"><strong>College Year Attended:</strong> {{ detail.college_year_attended }}</p>
+                    <p class="card-text"><strong>College Address:</strong> {{ detail.college_address }}</p>
+                    <p class="card-text"><strong>University Name:</strong> {{ detail.university_name }}</p>
+                    <p class="card-text"><strong>University Course Title:</strong> {{ detail.university_course_title }}</p>
+                    <p class="card-text"><strong>University Relevant Course:</strong> {{ detail.university_relevant_course }}</p>
+                    <p class="card-text"><strong>University Graduation Year:</strong> {{ detail.university_graduation_year }}</p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning" role="alert">
+                No education background details available.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'create_edu' %}" class="btn btn-primary">Add Education Info</a>
+</section>
+
+<section class="mb-4">
+    <h2>Other Info</h2>
+    <div class="row">
+        {% for info in other_info %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ info.current_job_title }} at {{ info.current_company }}</h5>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'edit_other_info' info.pk %}" class="btn btn-outline-secondary">Edit</a>
+                        <a href="{% url 'delete_other_info' info.pk %}" class="btn btn-outline-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning" role="alert">
+                No other info available.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'add_other_info' %}" class="btn btn-primary">Add Other Info</a>
+</section>
+
+<section class="mb-4">
+    <h2>Work Histories</h2>
+    <div class="row">
+        {% for history in histories %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ history.job_title }} at {{ history.company_name }} ({{ history.start_year }} - {{ history.end_year }})</h5>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'edit_history' history.pk %}" class="btn btn-outline-secondary">Edit</a>
+                        <a href="{% url 'delete_history' history.pk %}" class="btn btn-outline-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning" role="alert">
+                No work histories available.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'add_history' %}" class="btn btn-primary">Add Work History</a>
+</section>
+
+<section class="mb-4">
+    <h2>Achievements</h2>
+    <div class="row">
+        {% for achieve in achievements %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ achieve.achievement_title }}</h5>
+                    <p class="card-text">{{ achieve.description }}</p>
+                    {% if achieve.attachment %}
+                        <a href="{{ achieve.attachment.url }}" class="btn btn-outline-info">View Attachment</a>
+                    {% endif %}
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'edit_achieve' achieve.pk %}" class="btn btn-outline-secondary">Edit</a>
+                        <a href="{% url 'delete_achieve' achieve.pk %}" class="btn btn-outline-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning" role="alert">
+                No achievements available.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'add_achieve' %}" class="btn btn-primary">Add Achievement</a>
+</section>
+
+{% endblock %}

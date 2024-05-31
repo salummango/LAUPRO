@@ -1,0 +1,61 @@
+{% extends 'user/user_base.html' %}
+{% load static %}
+{% block content %}
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<div class="container">
+    <h1 class="mt-5">Welcome to Your Dashboard, {{ request.user.registration_no }}</h1>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h2>Notifications</h2>
+            <ul class="list-group">
+                {% for notification in notifications %}
+                <li class="list-group-item">
+                    {{ notification.message }} : <a href="{{ notification.link }}">view</a>
+                </li>
+                {% empty %}
+                <li class="list-group-item">No notifications available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h2>Club Memberships</h2>
+            <ul class="list-group">
+                {% for membership in memberships %}
+                <li class="list-group-item">
+                    <a href="{% url 'Alumni_clubs:view_club' club_id=membership.club.id %}">{{ membership.club.name }}</a>
+                </li>
+                {% empty %}
+                <li class="list-group-item">You're not a member of any club.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <h2 class="mt-5">Available Clubs</h2>
+    <div class="row mt-5">
+        {% for club in clubs_not_member %}
+        <div class="col-md-4">
+            <div class="card border-10 shadow-sm rounded mt-4">
+                <div class="position-relative">
+                    <div class="position-absolute top-0 start-50 translate-middle">
+                        <img src="{{ club.logo.url }}" class="rounded-circle border border-white" width="120" height="110" alt="{{ club.name }} logo">
+                    </div>
+                </div>
+                <div class="card-body mt-5">
+                    <h5 class="card-title">{{ club.name }}</h5>
+                    <p class="card-text">{{ club.description }}</p>
+                    <a href="{% url 'Alumni_clubs:view_club' club_id=club.id %}" class="btn btn-primary btn-sm">View Club</a>
+                    <form action="{% url 'Alumni_clubs:join_club' club_id=club.id %}" method="post" class="mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">Join Club</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-md-12">
+            <p>No clubs available.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

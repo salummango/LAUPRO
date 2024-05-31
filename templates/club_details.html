@@ -1,0 +1,148 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Club-{{ club.name }}Details</title>
+
+        
+                        
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/bootstrap-icons2.css' %}" rel="stylesheet">
+        <link href="{% static 'css/club-list-boostrap.css' %}" rel="stylesheet">
+
+    </head>
+    
+    <body id="top">
+
+        <main>
+            <header class="site-header d-flex flex-column justify-content-center align-items-center">
+                <div class="container">
+                    <div class="row justify-content-center align-items-center">
+
+                        <div class="col-lg-5 col-12 mb-5">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{% url 'Alumni_clubs:club_list' %}">Club List</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Club Details</li>
+                                </ol>
+                            </nav>
+
+                            <h2 class="text-white">{{ club.name }} <br>Details</h2>
+
+                        </div>
+
+                        <div class="col-lg-5 col-12">
+                            <div class="topics-detail-block bg-white shadow-lg">
+                                <img src="{{ club.logo.url }}" alt="{{ club.name }} logo" class="topics-detail-block-image img-fluid">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </header>
+
+
+            <section class="topics-detail-section section-padding" id="topics-detail">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-8 col-12 m-auto">
+                            <h3 class="mb-4">{{ club.name }}</h3>
+
+                            <p>{{ club.description }}</p>
+                            
+                    </div>
+                </div>
+            </section>
+
+            <section class="timeline-section section-padding" id="section_3">
+                <div class="section-overlay"></div>
+
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-12 text-center">
+                            <h2 class="text-white mb-4">Club Members</h1>
+                        </div>
+
+                        <div class="col-lg-10 col-12 mx-auto">
+                            <div class="timeline-container">
+                                <ul class="vertical-scrollable-timeline" id="vertical-scrollable-timeline">
+                                    <div class="list-progress">
+                                        <div class="inner"></div>
+                                    </div>
+                                    {% for member in members %}
+                                    <li>
+                                        <h4 class="text-white mb-3">{{ member.user.username }}</h4>
+
+                                        <p class="text-white">(Joined: {{ member.joined_at }})</p>
+
+                                        <div class="icon-holder">
+                                          <i class="bi-search"></i>
+                                        </div>
+                                    </li>
+                                    {% empty %}
+                                    <p>No Members available.</p>
+                                    {% endfor %}
+                                </ul>
+                                
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="section-padding section-bg">
+                <div class="container">
+                    <h2 class="mt-5">Posts</h2>
+                    <div class="row">
+                        {% for post in posts %}
+                            <div class="col-md-8 mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i>posted by,</i>{{ post.author.username }}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">{{ post.created_at }}</h6>
+                                        <p class="card-text">{{ post.content }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {% for post in posts %}
+                    <div class="col-lg-8 col-12 mt-3 mx-auto">
+                        <div class="custom-block custom-block-topics-listing bg-white shadow-lg mb-5">
+                            <div class="d-flex">
+                                <div class="custom-block-topics-listing-info d-flex">
+                                    <div>
+                                        <h5 class="mb-2"><i class="text-muted">posted by,</i>{{ post.author.username }}</h5>
+                                        <p class="card-text">{{ post.created_at }}</p>
+    
+                                        <p class="mb-0">{{ post.content }}</p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p>No Post available.</p>
+                        {% endfor %}
+    
+                    </div>
+
+                </div>
+            </section>
+        </main>
+		
+        
+
+    </body>
+</html>

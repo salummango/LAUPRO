@@ -1,0 +1,92 @@
+{% extends 'user/user_base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event List</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/event-list-boostrap.css' %}" rel="stylesheet">
+    
+</head>
+<body>
+    {% block content%}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/event-list-boostrap.css' %}" rel="stylesheet">
+
+    <section class="events-section events-listing-section section-bg section-padding" id="section_3">
+        <div class="container">
+            <div class="row">
+
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-lg-12 col-12 d-flex justify-content-between align-items-center mb-3">
+                            <h2>Upcoming Events</h2>
+                            <a href="{% url 'AlumniEvents:create_event' %}" class="btn btn-primary">Create Event</a>
+                        </div>
+                        <!-- Additional content here -->
+                    </div>
+                </div>
+                {% for event in events %}
+                <div class="row custom-block mb-3">
+                    <div class="col-lg-2 col-md-4 col-12 order-2 order-md-0 order-lg-0">
+                        <div class="custom-block-date-wrap d-flex d-lg-block d-md-block align-items-center mt-3 mt-lg-0 mt-md-0">
+                            <h6 class="custom-block-date mb-lg-1 mb-0 me-3 me-lg-0 me-md-0">{{ event.start_date }}</h6>
+
+                            <strong class="text-white">Feb 2023</strong>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-8 col-12 order-1 order-lg-0">
+                        <div class="custom-block-image-wrap">
+                            <a href="{% url 'AlumniEvents:event_detail' event.id %}">
+                                <img src="images/professional-golf-player.jpg" class="custom-block-image img-fluid" alt="">
+
+                                <i class="custom-block-icon bi-link"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-12 order-3 order-lg-0">
+                        <div class="custom-block-info mt-2 mt-lg-0">
+                            <a href="{% url 'AlumniEvents:event_detail' event.id %}" class="events-title mb-3">{{ event.title }}</a>
+
+                            <p class="mb-0">You can browse many different categories of CSS templates using <a href="https://templatemo.com/tag" target="_blank">tags</a> on TemplateMo website. Feel free to browse more templates and download them free instantly.</p>
+
+                            <div class="d-flex flex-wrap border-top mt-4 pt-3">
+
+                                <div class="mb-4 mb-lg-0">
+                                    <div class="d-flex flex-wrap align-items-center mb-1">
+                                        <span class="custom-block-span">Location:</span>
+
+                                        <p class="mb-0">{{ event.location }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center ms-lg-auto">
+                                    <a href="{% url 'AlumniEvents:event_detail' event.id %}" class="btn custom-btn">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                {% empty %}
+                <div class="card empty-message">No events available.</div>
+                {% endfor %}
+
+                
+            </div>
+        </div>
+    </section>
+    {% endblock%}
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!-- form.html -->
+{% extends 'user/user_base.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+<style>
+    .form-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+    .form-section h2 {
+        margin-top: 0;
+    }
+    .form-control {
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'list_details' %}">Details List</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create Educational Background</li>
+                </ol>
+            </nav>
+            <h1>Create Educational Background</h1>
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                    <h2>Primary School</h2>
+                    <div class="mb-3">
+                        {{ form.primary_school_name.label_tag }} {{ form.primary_school_name }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.primary_school_year_attended.label_tag }} {{ form.primary_school_year_attended }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.primary_school_address.label_tag }} {{ form.primary_school_address }}
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Secondary School</h2>
+                    <div class="mb-3">
+                        {{ form.secondary_school_name.label_tag }} {{ form.secondary_school_name }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.secondary_school_year_attended.label_tag }} {{ form.secondary_school_year_attended }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.secondary_school_address.label_tag }} {{ form.secondary_school_address }}
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>VETA</h2>
+                    <div class="mb-3">
+                        {{ form.veta_name.label_tag }} {{ form.veta_name }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.veta_program.label_tag }} {{ form.veta_program }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.veta_year_attended.label_tag }} {{ form.veta_year_attended }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.veta_address.label_tag }} {{ form.veta_address }}
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>College</h2>
+                    <div class="mb-3">
+                        {{ form.college_name.label_tag }} {{ form.college_name }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.college_program.label_tag }} {{ form.college_program }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.college_year_attended.label_tag }} {{ form.college_year_attended }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.college_address.label_tag }} {{ form.college_address }}
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>University</h2>
+                    <div class="mb-3">
+                        {{ form.university_name.label_tag }} {{ form.university_name }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.university_course_title.label_tag }} {{ form.university_course_title }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.university_relevant_course.label_tag }} {{ form.university_relevant_course }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.university_graduation_year.label_tag }} {{ form.university_graduation_year }}
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="{% url 'list_details' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

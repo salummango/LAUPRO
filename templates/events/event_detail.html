@@ -1,0 +1,48 @@
+{% extends 'user/user_base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+    {% block content%}
+    <style>
+       
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+            margin-top: 0;
+        }
+        p {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        strong {
+            font-weight: bold;
+        }
+        .description {
+            margin-top: 15px;
+        }
+    </style>
+    <div class="container">
+        <h1>{{ event.title }}</h1>
+        <p><strong>Start Date:</strong> {{ event.start_date }}</p>
+        <p><strong>End Date:</strong> {{ event.end_date }}</p>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+        <div class="description">
+            <strong>Description:</strong>
+            <p>{{ event.body|safe }}</p>
+        </div>
+    </div>
+    {% endblock%}
+</body>
+</html>

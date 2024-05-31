@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <article>
+        <h1>{{ post.title }}</h1>
+        <p class="date">Published on {{ post.publish }} by {{ post.author }}</p>
+        {{ post.body|safe }} {# Use the |safe filter to render HTML content #}
+
+        {% if post.image %}
+            <img width="90" height="50" src="{{ post.image.url }}" alt="{{ post.title }}">
+        {% endif %}
+
+        {% if post.video %}
+            <video controls width="100" height="50"  autoplay muted>
+                <source src="{{ post.video.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        {% endif %}
+    </article>
+{% endblock %}
