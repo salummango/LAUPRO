@@ -50,43 +50,74 @@ from .models import EducationalBackground
 
 # List View
 def list_details_view(request):
-    other_info = OtherInfo.objects.all()
-    histories = History.objects.all()
-    achievements = Achieve.objects.all()
-    background = EducationalBackground.objects.all()
-    return render(request, 'user/list_details.html', {
-        'other_info': other_info,
-        'histories': histories,
-        'achievements': achievements,
-        'background': background
-    })
+    if request.user.is_authenticated:
+        user = request.user
+        other_info = OtherInfo.objects.all()
+        histories = History.objects.all()
+        achievements = Achieve.objects.all()
+        background = EducationalBackground.objects.all()
+        return render(request, 'user/list_details.html', {
+            'other_info': other_info,
+            'histories': histories,
+            'achievements': achievements,
+            'background': background
+        })
+    else:
+        return redirect('login')  # Redirect to login if user is not authenticated
+    
 
 # Create Views
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import OtherInfoForm
+
+@login_required
 def add_other_info(request):
     if request.method == 'POST':
         form = OtherInfoForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            other_info = form.save(commit=False)
+            other_info.alumni = request.user
+            other_info.save()
             return redirect('list_details')
     else:
         form = OtherInfoForm()
     return render(request, 'user/form.html', {'form': form, 'title': 'Add Other Info'})
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render, get_object_or_404
+from .models import OtherInfo, History
+from .forms import HistoryForm
+
+@login_required
 def add_history(request):
+    # Get the OtherInfo for the current user
+    other_info = get_object_or_404(OtherInfo, alumni=request.user)
+    
     if request.method == 'POST':
         form = HistoryForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('list_details')
+            history = form.save(commit=False)
+            history.other_info = other_info
+            history.save()
+            return redirect('list_details')  # Update with the correct view name
     else:
         form = HistoryForm()
+
     return render(request, 'user/form.html', {'form': form, 'title': 'Add Work History'})
 
+
+@login_required
 def add_achieve(request):
+    # Get the OtherInfo for the current user
+    other_info = get_object_or_404(OtherInfo, alumni=request.user)
+    
     if request.method == 'POST':
         form = AchieveForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            achieve = form.save(commit=False)
+            achieve.other_info = other_info
+            achieve.save()
             return redirect('list_details')
     else:
         form = AchieveForm()
@@ -177,17 +208,53 @@ def load_courses(request):
     return JsonResponse(list(courses.values('id', 'name')), safe=False)
 
 
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render, get_object_or_404
+from .models import EducationalBackground
 from .forms import EducationalBackgroundForm
 
+@login_required
 def create_educational_background(request):
     if request.method == 'POST':
         form = EducationalBackgroundForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('list_details')  # Redirect to a view that lists educational backgrounds
+            educational_background = form.save(commit=False)
+            educational_background.alumni = request.user
+            educational_background.save()
+            return redirect('list_details')  # Update with the correct view name
     else:
         form = EducationalBackgroundForm()
-    return render(request, 'user/create_edu_background.html', {'form': form})
+    return render(request, 'user/create_edu_background.html', {'form': form, 'title': 'Add Educational Background'})
 
 
+@login_required
+def edit_educational_background(request):
+    educational_background = get_object_or_404(EducationalBackground, alumni=request.user)
+    
+    if request.method == 'POST':
+        form = EducationalBackgroundForm(request.POST, instance=educational_background)
+        if form.is_valid():
+            form.save()
+            return redirect('list_details')  # Update with the correct view name
+    else:
+        form = EducationalBackgroundForm(instance=educational_background)
+    return render(request, 'user/edit_edu_background.html', {'form': form, 'title': 'Edit Educational Background'})
+
+
+# views.py
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .forms import AlumniEditForm
+from .models import Alumni
+
+@login_required
+def edit_alumni_profile(request):
+    alumni = request.user
+    if request.method == 'POST':
+        form = AlumniEditForm(request.POST, instance=alumni)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to the profile page or any other page
+    else:
+        form = AlumniEditForm(instance=alumni)
+    return render(request, 'user/edit_alumni.html', {'form': form, 'title': 'Edit Profile'})

@@ -29,7 +29,9 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('registration/', views.register, name='registartions'),
     path('ajax/load-courses/', views.load_courses, name='load_courses'),
+    path('edit_alumni/', views.edit_alumni_profile, name='edit_alumni'),
     
 
     path('create_education/', views.create_educational_background, name='create_edu'),
+    path('edit_education/', views.edit_educational_background, name='edit_education'),
 ]

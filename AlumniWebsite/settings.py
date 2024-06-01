@@ -64,7 +64,7 @@ ROOT_URLCONF = 'AlumniWebsite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [r'''C:\Users\user\Documents\LAU\LAUPTEST7\templates'''],
+        'DIRS': [r'''C:\Users\user\Documents\LAU\LAUPTEST8\templates'''],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

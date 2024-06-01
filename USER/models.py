@@ -27,8 +27,8 @@ class History(models.Model):
     other_info = models.ForeignKey(OtherInfo, on_delete=models.CASCADE, related_name='histories')
     job_title = models.CharField(max_length=100, blank=True, null=True)
     company_name = models.CharField(max_length=100, blank=True, null=True)
-    start_year = models.IntegerField(blank=True, null=True)
-    end_year = models.IntegerField(blank=True, null=True)
+    start_year = models.DateField(blank=True, null=True)
+    end_year = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.job_title} at {self.company_name} ({self.start_year}-{self.end_year})"
@@ -126,31 +126,31 @@ class EducationalBackground(models.Model):
     alumni = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='educational_background')  # Temporary default
     # Primary School Details
     primary_school_name = models.CharField(max_length=255)
-    primary_school_year_attended = models.CharField(max_length=50)
+    primary_school_year_attended = models.IntegerField(max_length=4)
     primary_school_address = models.CharField(max_length=255)
     
     # Secondary School Details
     secondary_school_name = models.CharField(max_length=255)
-    secondary_school_year_attended = models.CharField(max_length=50)
+    secondary_school_year_attended = models.IntegerField(max_length=4)
     secondary_school_address = models.CharField(max_length=255)
     
     # VETA Details (Vocational Education and Training Authority)
     veta_name = models.CharField(max_length=255, blank=True, null=True)
     veta_program = models.CharField(max_length=255, blank=True, null=True)
-    veta_year_attended = models.CharField(max_length=50, blank=True, null=True)
+    veta_year_attended = models.IntegerField(max_length=4, blank=True, null=True)
     veta_address = models.CharField(max_length=255, blank=True, null=True)
     
     # College Details
     college_name = models.CharField(max_length=255, blank=True, null=True)
     college_program = models.CharField(max_length=255, blank=True, null=True)
-    college_year_attended = models.CharField(max_length=50, blank=True, null=True)
+    college_year_attended = models.IntegerField(max_length=4, blank=True, null=True)
     college_address = models.CharField(max_length=255, blank=True, null=True)
     
     # university Details
     university_name = models.CharField(max_length=255)
     university_course_title= models.CharField(max_length=255)
     university_relevant_course = models.TextField()
-    university_graduation_year = models.CharField(max_length=50)
+    university_graduation_year = models.IntegerField(max_length=4)
     
     
     def __str__(self):

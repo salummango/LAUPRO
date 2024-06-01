@@ -4,10 +4,60 @@
 
 {% block content %}
 <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<style>
+    .user-details {
+        max-width: 600px;
+        margin: auto;
+    }
+    .user-details .card-header {
+        background-color: #007bff;
+        color: #fff;
+    }
+</style>
 
 <header class="mb-4">
     <h1 class="text-center">Details</h1>
 </header>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-4">
+        <h1>USER</h1>
+        <a href="{% url 'edit_alumni' %}" class="btn btn-primary">Edit Info</a>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Personal Information</h5>
+                    <p class="card-text"><strong>Registration Number:</strong> {{ request.user.registration_no }}</p>
+                    <p class="card-text"><strong>Age:</strong> {{ request.user.age }}</p>
+                    <p class="card-text"><strong>Surname:</strong> {{ request.user.surname }}</p>
+                    <p class="card-text"><strong>First Name:</strong> {{ request.user.first_name }}</p>
+                    <p class="card-text"><strong>Birthdate:</strong> {{ request.user.birthdate }}</p>
+                    <p class="card-text"><strong>Sex:</strong> {{ request.user.sex }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Contact Information</h5>
+                    <p class="card-text"><strong>Email:</strong> {{ request.user.email }}</p>
+                    <p class="card-text"><strong>Phone:</strong> {{ request.user.phone }}</p>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Academic Information</h5>
+                    <p class="card-text"><strong>Branch:</strong> {{ request.user.branch }}</p>
+                    <p class="card-text"><strong>Course Name:</strong> {{ request.user.course_name }}</p>
+                    <p class="card-text"><strong>FIV Index:</strong> {{ request.user.fiv_index }}</p>
+                    <p class="card-text"><strong>FVI Index:</strong> {{ request.user.fvi_index }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <h2>Education Background</h2>
 <section class="mb-4">
@@ -45,7 +95,10 @@
         </div>
         {% endfor %}
     </div>
-    <a href="{% url 'create_edu' %}" class="btn btn-primary">Add Education Info</a>
+    {% if not other_info.exists %}
+        <a href="{% url 'create_edu' %}" class="btn btn-primary">Add Education Info</a>
+    {% endif %}
+    <a href="{% url 'edit_education' %}" class="btn btn-primary">Edit Education Info</a>
 </section>
 
 <section class="mb-4">
@@ -56,9 +109,9 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ info.current_job_title }} at {{ info.current_company }}</h5>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-end">
                         <a href="{% url 'edit_other_info' info.pk %}" class="btn btn-outline-secondary">Edit</a>
-                        <a href="{% url 'delete_other_info' info.pk %}" class="btn btn-outline-danger">Delete</a>
+                        {% comment %} <a href="{% url 'delete_other_info' info.pk %}" class="btn btn-outline-danger">Delete</a> {% endcomment %}
                     </div>
                 </div>
             </div>
@@ -71,7 +124,9 @@
         </div>
         {% endfor %}
     </div>
-    <a href="{% url 'add_other_info' %}" class="btn btn-primary">Add Other Info</a>
+    {% if not other_info.exists %}
+        <a href="{% url 'add_other_info' %}" class="btn btn-primary">Add Other Info</a>
+    {% endif %}
 </section>
 
 <section class="mb-4">

@@ -14,35 +14,46 @@ from .models import OtherInfo, History, Achieve
 class OtherInfoForm(forms.ModelForm):
     class Meta:
         model = OtherInfo
-        fields = '__all__'
+        fields = ['current_job_title','current_company','responsibilities','skills','interests','resume',
+                  'portfolio','facebook','instagram','twitter','github']
+
 
 class HistoryForm(forms.ModelForm):
     class Meta:
         model = History
-        fields = '__all__'
+        fields = ['job_title', 'company_name', 'start_year','end_year']
+
+    def __str__(self):
+        return f"{self.job_title} at {self.company_name} ({self.start_year}-{self.end_year})"
 
 class AchieveForm(forms.ModelForm):
     class Meta:
         model = Achieve
-        fields = '__all__'
+        fields = ['achievement_title','description','attachment']
 
 
-from django import forms
-from .models import Alumni, Course, UniversityBranch
+
+
 
 from django import forms
 from .models import Alumni, UniversityBranch, Course
+from django.forms import PasswordInput
 
 class AlumniForm(forms.ModelForm):
     branch = forms.ModelChoiceField(queryset=UniversityBranch.objects.all(), required=True, widget=forms.Select(attrs={'id': 'branch'}))
     course_name = forms.ModelChoiceField(queryset=Course.objects.none(), required=True, widget=forms.Select(attrs={'id': 'course_name'}))
+    password = forms.CharField(widget=PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter Password'}))
 
     class Meta:
         model = Alumni
-        fields = ['surname', 'first_name', 'birthdate',  'sex', 'fiv_index', 'fvi_index', 'email', 'phone', 'branch', 'course_name', 'registration_no', 'password']
+        fields = ['surname', 'first_name', 'birthdate', 'sex', 'fiv_index', 'fvi_index', 'email', 'phone', 'branch', 'course_name', 'registration_no', 'password']
+        widgets = {
+            'birthdate': forms.DateInput(format='%Y-%m-%d', attrs={'class': 'form-control'}),
+            
+        }
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(AlumniForm, self).__init__(*args, **kwargs)
         if 'branch' in self.data:
             try:
                 branch_id = int(self.data.get('branch'))
@@ -51,6 +62,28 @@ class AlumniForm(forms.ModelForm):
                 pass
         elif self.instance.pk and self.instance.branch:
             self.fields['course_name'].queryset = self.instance.branch.courses.order_by('name')
+        
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
+
+
+
+
+class AlumniEditForm(forms.ModelForm):
+    class Meta:
+        model = Alumni
+        fields = [
+            'surname', 'first_name', 'birthdate', 'sex',
+            'fiv_index', 'fvi_index', 'email', 'phone', 'branch', 'course_name'
+        ]
+        widgets = {
+            'birthdate': forms.DateInput(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(AlumniEditForm, self).__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
 
 
 from django import forms
